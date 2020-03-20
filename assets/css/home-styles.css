@@ -65,12 +65,13 @@ main{
 
 
 .description-container{
-    width: 70%;
+    width: 80%;
 }
 
 .category-container{
     text-align: center;
-    width: 40%;
+    width: 20%;
+    margin-right: 1rem;
 }
 
 .category-text{

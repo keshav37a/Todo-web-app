@@ -4,19 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TODO App</title>
+    <title><%= title %> TODO App</title>
     <link rel="stylesheet" type="text/css" href="/css/home-styles.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
         integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
 
 <body>
-    <h1 class="heading">TODO App</h1>
+    <h1 class="heading"><%= title %> TODO App</h1>
     <main>
         <form action="/create-item" method="POST" class="mb1">
             <div class="mb1">
                 <div class="headers ">DESCRIPTION</div>
-                <input type="text" class="input-fields" name="description" required >
+                <input type="text" class="input-fields" name="description" required>
             </div>
             <div class="flex row spc-evn mb1">
                 <div class="flex col start grow mr1">
@@ -33,56 +33,52 @@
 
                 <div id="calendar-container" class="flex col start grow mr1">
                     <div class="headers">DUE DATE</div>
-                    <div><input type="text" id="calendar" class="input-fields" name="date" required/></div>
+                    <div><input type="text" id="calendar" class="input-fields" name="date" required /></div>
                 </div>
             </div>
 
             <div id="button-container" class="flex row center">
                 <div>
-                    <button class="btn" id="btn-add" type="submit"><i class="fas fa-plus icon"></i><span class="btn-text">Add Task</span></button>
-                </div>
-                <div>
-                    <button class="btn" id="btn-delete"><i class="fas fa-trash icon"></i><span class="btn-text">Delete Tasks</span ></button>
+                    <button class="btn" id="btn-add" type="submit"><i class="fas fa-plus icon"></i><span
+                            class="btn-text">Add Task</span></button>
                 </div>
             </div>
         </form>
 
-        <div class="flex col start mb1 list-container">
-
-            <div class="flex row start list-item-container">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="item-input-box" size="40">
-                </div>
-                <div class="flex col start description-container">
-                    <div class="description">YoLo Bitches! Whattup</div>
-                    <div>
-                        <i class="fas fa-calendar-alt mr1"></i>
-                        <span>MAY 2, 2019</span>
-                    </div>
-                </div>
-                <div class="category category-container">
-                    YOHO
-                </div>
+        <form action="/delete-item" method="POST"> 
+            <div class="flex row center">
+                <button class="btn" id="btn-delete" type="submit"><i class="fas fa-trash icon"></i><span class="btn-text">Delete
+                        Tasks</span></button>
             </div>
 
-            <div class="flex row start list-item-container">
-                <div class="checkbox-container">
-                    <input type="checkbox" class="item-input-box" size="40">
-                </div>
-                <div class="flex col start description-container">
-                    <div class="description">YoLo Bitches! Whattup</div>
-                    <div>
-                        <i class="fas fa-calendar-alt mr1"></i>
-                        <span>MAY 2, 2019</span>
-                    </div>
-                </div>
-                <div class="category category-container">
-                    YOHO
-                </div>
+            <div class="flex col start mb1 list-container">
+                <% for(let i of to_do_list) 
+                    {%>
+                        <div class="flex row start list-item-container">
+                            <div class="checkbox-container">
+                                <input type="checkbox" class="item-input-box" size="40" name = <%= i.id %>>
+                            </div>
+                            <div class="flex col start description-container">
+                                <div class="description"><%= i.description %></div>
+                                <div>
+                                    <i class="fas fa-calendar-alt mr1"></i>
+                                    <span><%= i.date %></span>
+                                </div>
+                            </div>
+                            
+                            <% if (i.category !== "none") { %>
+                                <div class="category category-container">
+                                    <span><%= i.category %></span>
+                                </div>
+                            <% } %>
+                        </div>
+                    <%} 
+                %>
             </div>
+        </form>
 
-        </div>
         
+
 
 
     </main>
