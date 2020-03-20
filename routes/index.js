@@ -11,4 +11,5 @@ router.get('/', homeController.home);
 router.post('/create-item', homeController.createItem);
 router.post('/delete-item', homeController.deleteItem);
 
+//exporting the router so that these calls can be called from the x
 module.exports = router;

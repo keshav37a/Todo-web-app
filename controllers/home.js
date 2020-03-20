@@ -1,10 +1,11 @@
+//importing the db instance and the model instance
 const db = require('../config/mongoose');
 const ToDoItem = require('../models/toDoItem');
-var toDoList = [];
-var id = 0;
 
+//exporting the home controller so that it is accessible in the routes file
 module.exports.home = function (req, res) {
-    // return res.end('<h1>Home Controller</h1>');
+    
+    //fetching all items from database
     ToDoItem.find({}, function (err, toDoList) {
         if(err) {
             console.log(`Error Fetching Data From DB`);
@@ -18,13 +19,9 @@ module.exports.home = function (req, res) {
     })
 }
 
-module.exports.createItem = function (req, res) {
-    // console.log('req.body', req.body);
-    // req.body['id'] = id;
-    // id += 1;
-    // toDoList.push(req.body);
-    // console.log('toDo List', toDoList);
 
+module.exports.createItem = function (req, res) {
+    //adding item in db
     ToDoItem.create({
         description: req.body.description,
         category: req.body.category,
@@ -39,8 +36,11 @@ module.exports.createItem = function (req, res) {
     });
 }
 
+//Delete item from database
 module.exports.deleteItem = function (req, res) {
     console.log('req.body for deletion', req.body);
+
+    //getting the ids(_id from database) of all the checkboxes selected, locating them in the database and removing them
     let deleteData = req.body;
     for (let key of Object.keys(deleteData)) {
         console.log('key for deletion', key);
