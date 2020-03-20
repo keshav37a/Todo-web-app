@@ -15,13 +15,13 @@
     <main>
         <form action="/create-item" method="POST" class="mb1">
             <div class="mb1">
-                <div class="headers ">DESCRIPTION</div>
-                <input type="text" class="input-fields" name="description" required>
+                <div class="headers mt1 ml1">DESCRIPTION</div>
+                <input type="text" class="input-fields ml1 mr1" name="description" required>
             </div>
             <div class="flex row spc-evn mb1">
-                <div class="flex col start grow mr1">
-                    <div class="headers">CATEGORY</div>
-                    <select class="input-fields" name="category" required>
+                <div class="flex col start  mr1">
+                    <div class="headers ml1">CATEGORY</div>
+                    <select class="input-fields ml1 mr1" name="category" required>
                         <option value="none">Choose a Category</option>
                         <option value="Personal">Personal</option>
                         <option value="Work">Work</option>
@@ -31,9 +31,9 @@
                     </select>
                 </div>
 
-                <div id="calendar-container" class="flex col start grow mr1">
-                    <div class="headers">DUE DATE</div>
-                    <div><input type="text" id="calendar" class="input-fields" name="date" required /></div>
+                <div id="calendar-container" class="flex col start mr1">
+                    <div class="headers ml1">DUE DATE</div>
+                    <div><input type="text" id="calendar" class="input-fields ml1" name="date" required /></div>
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
 
         <form action="/delete-item" method="POST"> 
             <div class="flex row center">
-                <button class="btn" id="btn-delete" type="submit"><i class="fas fa-trash icon"></i><span class="btn-text">Delete
+                <button class="btn mb1" id="btn-delete" type="submit"><i class="fas fa-trash icon"></i><span class="btn-text">Delete
                         Tasks</span></button>
             </div>
 
@@ -56,11 +56,11 @@
                     {%>
                         <div class="flex row start list-item-container">
                             <div class="checkbox-container">
-                                <input type="checkbox" class="item-input-box" size="40" name = <%= i._id %>>
+                                <input type="checkbox" class="item-input-box" name = <%= i._id %>>
                             </div>
                             <div class="flex col start description-container">
                                 <div class="description"><%= i.description %></div>
-                                <div>
+                                <div class="date-container">
                                     <i class="fas fa-calendar-alt mr1"></i>
                                     <span><%= i.date %></span>
                                 </div>
@@ -68,10 +68,11 @@
 
                             <div>
                                 <% if (i.category !== "none") { %>
-                                <div id="cat" class="category category-container">
-                                    <span><%= i.category %></span>
-                                </div>
-                                <% } %>    
+                                    <div id="cat" class="category category-container">
+                                        <span><%= i.category %></span>
+                                    </div>
+                                    <% } 
+                                %>
                             </div>
                             
                             
