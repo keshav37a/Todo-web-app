@@ -1,12 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO App</title>
-    <link rel="stylesheet" type="text/css" href="../assets/css/home-styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/home-styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css"
+        integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 </head>
+
 <body>
     <h1 class="heading">TODO App</h1>
+    <main>
+        <form action="/create-item" method="POST" class="mb1">
+            <div class="mb1">
+                <div class="headers ">DESCRIPTION</div>
+                <input type="text" class="input-fields" name="description" required >
+            </div>
+            <div class="flex row spc-evn mb1">
+                <div class="flex col start grow mr1">
+                    <div class="headers">CATEGORY</div>
+                    <select class="input-fields" name="category" required>
+                        <option value="none">Choose a Category</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Work">Work</option>
+                        <option value="School">School</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+
+                <div id="calendar-container" class="flex col start grow mr1">
+                    <div class="headers">DUE DATE</div>
+                    <div><input type="text" id="calendar" class="input-fields" name="date" required/></div>
+                </div>
+            </div>
+
+            <div id="button-container" class="flex row center">
+                <div>
+                    <button class="btn" id="btn-add" type="submit"><i class="fas fa-plus icon"></i><span class="btn-text">Add Task</span></button>
+                </div>
+                <div>
+                    <button class="btn" id="btn-delete"><i class="fas fa-trash icon"></i><span class="btn-text">Delete Tasks</span ></button>
+                </div>
+            </div>
+        </form>
+
+        <div class="flex col start mb1 list-container">
+
+            <div class="flex row start list-item-container">
+                <div class="checkbox-container">
+                    <input type="checkbox" class="item-input-box" size="40">
+                </div>
+                <div class="flex col start description-container">
+                    <div class="description">YoLo Bitches! Whattup</div>
+                    <div>
+                        <i class="fas fa-calendar-alt mr1"></i>
+                        <span>MAY 2, 2019</span>
+                    </div>
+                </div>
+                <div class="category category-container">
+                    YOHO
+                </div>
+            </div>
+
+            <div class="flex row start list-item-container">
+                <div class="checkbox-container">
+                    <input type="checkbox" class="item-input-box" size="40">
+                </div>
+                <div class="flex col start description-container">
+                    <div class="description">YoLo Bitches! Whattup</div>
+                    <div>
+                        <i class="fas fa-calendar-alt mr1"></i>
+                        <span>MAY 2, 2019</span>
+                    </div>
+                </div>
+                <div class="category category-container">
+                    YOHO
+                </div>
+            </div>
+
+        </div>
+        
+
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/home-script.js"></script>
 </body>
+
 </html>
