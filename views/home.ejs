@@ -65,12 +65,16 @@
                                     <span><%= i.date %></span>
                                 </div>
                             </div>
-                            
-                            <% if (i.category !== "none") { %>
-                                <div class="category category-container">
+
+                            <div>
+                                <% if (i.category !== "none") { %>
+                                <div id="cat" class="category category-container">
                                     <span><%= i.category %></span>
                                 </div>
-                            <% } %>
+                                <% } %>    
+                            </div>
+                            
+                            
                         </div>
                     <%} 
                 %>
