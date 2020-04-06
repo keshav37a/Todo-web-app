@@ -15,7 +15,7 @@
     <h1 class="heading">TODO App</h1>
     <main>
         <!-- Form to create an item in the list using post request -->
-        <form action="/create-item" method="POST" class="mb1">
+        <form action="/create-item" method="POST" class="mb1" id="add-note-form">
             <div class="mb1">
                 <div class="headers mt1 ml1">DESCRIPTION</div>
                 <input type="text" class="input-fields ml1 mr1" name="description" required>
@@ -59,6 +59,7 @@
             </div>
 
             <div id="dropdown-container" class="flex row center">
+                <!-- Dropdown for sort  -->
                 <div id="dropdown-sort-container" class="mb1 mt1 mr1">
                     <label for="dropdown-sort" class="mr1">Sort By</label>
                     <select name="sort-items" id="dropdown-sort">
@@ -69,6 +70,7 @@
                     </select>
                 </div>
 
+                <!-- Dropdown for filter according to category  -->
                 <div id="dropdown-filter-container" class="mb1 mt1 mr1">
                     <label for="dropdown-filter" class="mr1">Filter</label>
                     <select name="filter-items" id="dropdown-filter">
@@ -90,7 +92,7 @@
             <div class="flex col start mb1 list-container" id="to-do-items-list">
                 <% for(let i of to_do_list) 
                     {%>
-                        <div class="flex row start list-item-container">
+                        <div id="container-<%=i._id%>" class="flex row start list-item-container">
                             <div class="checkbox-container">
                                 <input type="checkbox" class="item-input-box" name = <%= i._id %>>
                             </div>
@@ -125,19 +127,15 @@
         
 
 
-
     </main>
-    // jquery imported
+    
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
-    // jquery-ui for calendar imported    
     <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 
-    //jquery for moment 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
-    //javascript script loaded
     <script type="text/javascript" src="/js/home-script.js"></script>
 </body>
 

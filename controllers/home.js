@@ -11,7 +11,7 @@ module.exports.home = function (req, res) {
             console.log(`Error Fetching Data From DB`);
             return;
         }
-        console.log('toDo List', toDoList);
+        // console.log('toDo List', toDoList);
         return res.render('home', {
             title: 'ToDo App',
             to_do_list: toDoList
@@ -21,20 +21,31 @@ module.exports.home = function (req, res) {
 
 
 
-module.exports.createItem = function (req, res) {
+module.exports.createItem = async function (req, res) {
     //adding item in db
-    ToDoItem.create({
-        description: req.body.description,
-        category: req.body.category,
-        date: req.body.date
-    }, function (err, newToDoItem) {
-        if (err) {
-            console.log(`error while add todo item to db: ${err}`);
-            return;
+
+    try{
+        console.log('create item in home controller called');
+        console.log(req.body);
+        let createItem = await ToDoItem.create({description: req.body.description,
+                                                category: req.body.category,
+                                                date: req.body.date});
+        
+        if(req.xhr){
+            console.log(`req.xhr in create item: ${req.xhr}`);
+            return res.status(200).json({
+                data: {
+                    items: createItem
+                },
+                message: 'Added one item successfully'
+            })
         }
-        console.log('db entry created: ', newToDoItem);
+        console.log('db entry created: ', createItem);
         return res.redirect('back');
-    });
+    }
+    catch(err){
+        console.log(`${err}`);
+    }
 }
 
 //Delete item from database
@@ -60,34 +71,42 @@ module.exports.sortItem = async function(req, res){
     console.log(req.query);
     let sortParameter = req.query;
     let getAndSortItems = {};
-    if(sortParameter.sby=='due-date'){
-        getAndSortItems = await ToDoItem.find({}).sort({date: -1});
-    }
-    else if(sortParameter.sby=='created-at'){
-        getAndSortItems = await ToDoItem.find({}).sort({createdAt: -1});
-    }
-    else if(sortParameter.sby=='updated-at'){
-        getAndSortItems = await ToDoItem.find({}).sort({updatedAt: -1});
-    }
-    else{
-        getAndSortItems = await ToDoItem.find({});
-    }
-    console.log(getAndSortItems);
-    console.log('Home Controller called for sortItem');
-    if(req.xhr){
-        console.log(`req.xhr: ${req.xhr}`);
-        return res.status(200).json({
-            data: {
-                items: getAndSortItems
-            },
-            message: 'Found and Sorted Successfully'
+
+    try{
+        if(sortParameter.sby=='due-date'){
+            getAndSortItems = await ToDoItem.find({}).sort({date: -1});
+        }
+        else if(sortParameter.sby=='created-at'){
+            getAndSortItems = await ToDoItem.find({}).sort({createdAt: -1});
+        }
+        else if(sortParameter.sby=='updated-at'){
+            getAndSortItems = await ToDoItem.find({}).sort({updatedAt: -1});
+        }
+        else{
+            getAndSortItems = await ToDoItem.find({});
+        }
+        console.log(getAndSortItems);
+        console.log('Home Controller called for sortItem');
+        if(req.xhr){
+            console.log(`req.xhr: ${req.xhr}`);
+            return res.status(200).json({
+                data: {
+                    items: getAndSortItems
+                },
+                message: 'Found and Sorted Successfully'
+            });
+        }
+        console.log('after xhr check', getAndSortItems);
+        return res.render('home', {
+            title: 'ToDo App',
+            to_do_list: getAndSortItems
         });
     }
-    console.log('after xhr check', getAndSortItems);
-    return res.render('home', {
-        title: 'ToDo App',
-        to_do_list: getAndSortItems
-    });
+    catch(err){
+        console.log(`error: ${err}`);
+    }
+
+    
 }
 
 

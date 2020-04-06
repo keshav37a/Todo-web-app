@@ -5,7 +5,36 @@ $(function() {
     $("#calendar").datepicker();
 }); 
 
+//ajax for add new note
+$('#add-note-form').submit(function(e){
+    console.log('On Submission');
+    let addNoteForm = $('#add-note-form');
+    e.preventDefault();
+    $.ajax({
+        type: 'post',
+        url: '/create-item',
+        data: addNoteForm.serialize(),
+        success: function(data){
+            console.log(data);
+            let str = addOneItemToList(data.data.items);
+            console.log(str);
+            let toDoItemList = $('#to-do-items-list');
+            toDoItemList.append($(str));
+            categoryColorCodeFn();
+            dateFormattingFn();
+            // addOneItemToColorCode($(str));
+            $('#add-note-form')[0].reset();
+            console.log(toDoItemList);
+        },
+        error: function(err){
+            console.log(err.responseText);
+        }
+    })
+})
+
+
 //using jquery now
+//A change function for an ajax call to get the elements from the db in a sorted order
 $('#dropdown-sort').change(function(){
     let selectedOption = $(this).children("option:selected").val();
     console.log('selected-option ');
@@ -23,6 +52,7 @@ $('#dropdown-sort').change(function(){
     // alert(selectedOption);
 })
 
+//A change function for an ajax call to get the elements from the db of a particular filter
 $('#dropdown-filter').change(function(){
     let selectedOption = $(this).children("option:selected").val();
     console.log('selected-option ');
@@ -39,6 +69,7 @@ $('#dropdown-filter').change(function(){
     })
 });
 
+//Format the date from the db in other format
 let dateFormattingFn = function(){
     $('.date').each(function(){
         let element = $(this);
@@ -48,47 +79,9 @@ let dateFormattingFn = function(){
     })
 }
 
-let categoryColorCodeFn = function(){
-    let categoryContainers = $('.category-container');
-    $(categoryContainers).each(function(){
-        let container = $(this);
-        // console.log(container);
-        let spanElement = $('.category-text', container);
-        let categoryText = spanElement.text();
-        if(categoryText=='none'){
-            container.remove();
-        }
-        if(categoryText=='Personal'){
-           container.css("background-color", "#3C6CB8");
-        }
-        else if(categoryText=='Work'){
-            container.css("background-color", "#9C00AF");
-        }
-        else if(categoryText=='Cleaning'){
-            container.css("background-color", "green");
-        }
-        else if(categoryText=='School'){
-            container.css("background-color", "#F2A700");
-        }
-        else if(categoryText=='Others'){
-            container.css("background-color", "violet");
-        }
-    })
-    // console.log(categoryContainers);
-}
-
-let domListUpdation = function(data){
-
-    let toDoItemList = $('#to-do-items-list');
-    toDoItemList.empty();
-    console.log(data.data.items);
-
-    let dataItemArray = data.data.items;
-
-    dataItemArray.forEach(element => {
-
-        let str = 
-        `<div class="flex row start list-item-container">
+let addOneItemToList = function(element){
+    let str = 
+        `<div id="container-${element._id}" class="flex row start list-item-container">
             <div class="checkbox-container">
                 <input type="checkbox" class="item-input-box" name = "${element._id}">
             </div>
@@ -112,6 +105,53 @@ let domListUpdation = function(data){
             </div>
         </div>`
 
+        return str;
+}
+
+let addOneItemToColorCode = function(container){
+        let spanElement = $('.category-text', container);
+        let categoryText = spanElement.text();
+        if(categoryText=='none'){
+            container.remove();
+        }
+        if(categoryText=='Personal'){
+           container.css("background-color", "#3C6CB8");
+        }
+        else if(categoryText=='Work'){
+            container.css("background-color", "#9C00AF");
+        }
+        else if(categoryText=='Cleaning'){
+            container.css("background-color", "green");
+        }
+        else if(categoryText=='School'){
+            container.css("background-color", "#F2A700");
+        }
+        else if(categoryText=='Others'){
+            container.css("background-color", "violet");
+        }
+}
+
+//A function to color code all notes according to category
+let categoryColorCodeFn = function(){
+    let categoryContainers = $('.category-container');
+    $(categoryContainers).each(function(){
+        let container = $(this);
+        addOneItemToColorCode(container);
+    })
+}
+
+//Add new dom to html after getting new data from the database for filter and sorting
+let domListUpdation = function(data){
+
+    let toDoItemList = $('#to-do-items-list');
+    toDoItemList.empty();
+    console.log(data.data.items);
+
+    let dataItemArray = data.data.items;
+
+    dataItemArray.forEach(element => {
+
+        let str = addOneItemToList(element);
         toDoItemList.append(str);
 
     });
