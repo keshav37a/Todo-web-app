@@ -5,41 +5,97 @@ $(function() {
     $("#calendar").datepicker();
 }); 
 
+//using jquery now
+$('#dropdown-sort').change(function(){
+    let selectedOption = $(this).children("option:selected").val();
+    $.ajax({
+        type: 'get',
+        url: `/sort-item/?sort-by=${selectedOption}`,
+        success: function(data){
+            console.log('Inside success function');
+            console.log(data);  
+            domListUpdation(data);
+        }
+    })
+    // alert(selectedOption);
+})
 
-// List item container consists of all the to do items which are added in the list
-var listItemContainer = document.getElementsByClassName('list-item-container');
-
-for(let item of listItemContainer){
-    let catItem = item.getElementsByTagName('div')[5];
-    let catItemText = "";
-
-    //Getting the category text for each list item to determin the color coding
-    if(catItem!=undefined)
-        catItemText = catItem.getElementsByTagName('span')[0].innerHTML;
-
-    //Getting the date item to properly format it because the format in which it is stored in the database is quite long and non user friendly
-    let dateItem = item.getElementsByTagName('div')[3];
-    let dateString = dateItem.getElementsByTagName('span')[0].innerHTML;
-    console.log(dateString);
-    let dateArray = dateString.split(' ');
-    let newDate = `${dateArray[1]} ${dateArray[2]}, ${dateArray[3]}`;
-    dateItem.getElementsByTagName('span')[0].innerHTML = newDate;
-    console.log(newDate);
-
-    if(catItemText=='Personal'){
-        catItem.setAttribute("style", "background-color: #3C6CB8;");
-    }
-    else if(catItemText=='Work'){
-        catItem.setAttribute("style", "background-color: #9C00AF;");
-    }
-    else if(catItemText=='Cleaning'){
-        catItem.setAttribute("style", "background-color: green;");
-    }
-    else if(catItemText=='School'){
-        catItem.setAttribute("style", "background-color: #F2A700;");
-    }
-    else if(catItemText=='Others'){
-        catItem.setAttribute("style", "background-color: violet;");
-    }
+let dateFormattingFn = function(){
+    $('.date').each(function(){
+        let element = $(this);
+        let unformattedDate = element.text();
+        let formattedDate = moment(unformattedDate).format('MMMM DD, hh:mm A');
+        element.text(formattedDate);
+    })
 }
 
+let categoryColorCodeFn = function(){
+    let categoryContainers = $('.category-container');
+    $(categoryContainers).each(function(){
+        let container = $(this);
+        // console.log(container);
+        let spanElement = $('.category-text', container);
+        let categoryText = spanElement.text();
+        if(categoryText=='Personal'){
+           container.css("background-color", "#3C6CB8");
+        }
+        else if(categoryText=='Work'){
+            container.css("background-color", "#9C00AF");
+        }
+        else if(categoryText=='Cleaning'){
+            container.css("background-color", "green");
+        }
+        else if(categoryText=='School'){
+            container.css("background-color", "#F2A700");
+        }
+        else if(categoryText=='Others'){
+            container.css("background-color", "violet");
+        }
+    })
+    // console.log(categoryContainers);
+}
+
+let domListUpdation = function(data){
+
+    let toDoItemList = $('#to-do-items-list');
+    toDoItemList.empty();
+    console.log(data.data.items);
+
+    let dataItemArray = data.data.items;
+
+    dataItemArray.forEach(element => {
+
+        let str = 
+        `<div class="flex row start list-item-container">
+            <div class="checkbox-container">
+                <input type="checkbox" class="item-input-box" name = "${element._id}">
+            </div>
+            <div class="flex col start description-container">
+                <div class="description">${element.description}</div>
+                <div class="date-container">
+                    <i class="fas fa-calendar-alt mr1"></i>
+                    <span>Due Date:</span>
+                    <span class="date">${element.date}</span>
+                </div>
+                <div class="date-container">
+                    <i class="fas fa-calendar-alt mr1"></i>
+                    <span>Date Added:</span>
+                    <span class="date">${element.createdAt}</span>
+                </div>
+            </div>
+            <div>
+                <div id="cat" class="category category-container">
+                    <span class="category-text">${element.category}</span>
+                </div>
+            </div>
+        </div>`
+
+        toDoItemList.append(str);
+
+    });
+
+    dateFormattingFn();
+}
+
+dateFormattingFn();
+categoryColorCodeFn();

@@ -68,7 +68,9 @@ main{
     margin-bottom: 0.5rem;    
 }
 
-
+.date-container{
+    margin-bottom: 0.5rem;
+}
 
 /* The category of each toDo item in the list */
 .category-container{
@@ -174,4 +176,8 @@ input{
 
 .grow{
     flex-grow: 1;
+}
+
+.wrap{
+    flex-wrap: wrap;
 }

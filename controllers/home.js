@@ -20,6 +20,7 @@ module.exports.home = function (req, res) {
 }
 
 
+
 module.exports.createItem = function (req, res) {
     //adding item in db
     ToDoItem.create({
@@ -53,4 +54,25 @@ module.exports.deleteItem = function (req, res) {
          })
     }
     return res.redirect('back');
+}
+
+module.exports.sortItem = async function(req, res){
+    console.log(req.body);
+    console.log('Home Controller called for sortItem');
+    let getAndSortItems = await ToDoItem.find({}).sort({createdAt: -1});
+
+    if(req.xhr){
+        console.log(`req.xhr: ${req.xhr}`);
+        return res.status(200).json({
+            data: {
+                items: getAndSortItems
+            },
+            message: 'Found and Sorted Successfully'
+        });
+    }
+    console.log('after xhr check', getAndSortItems);
+    return res.render('home', {
+        title: 'ToDo App',
+        to_do_list: getAndSortItems
+    });
 }

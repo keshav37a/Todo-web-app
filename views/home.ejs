@@ -58,8 +58,19 @@
                         Tasks</span></button>
             </div>
 
+            <div id="dropdown-sort-container" class="flex row center mb1 mt1">
+                <label for="dropdown-sort" class="mr1">Sort By</label>
+                <select name="sort-items" id="dropdown-sort">
+                    <option value="default" selected>None</option>
+                    <option value="due-date">Due Date</option>
+                    <option value="created-at">Created At</option>
+                    <option value="updated-at">Updated At</option>
+                </select>
+            </div>
+
+
             <!-- List container which consists of each item in the list, getting populated by iterating over toDoList array -->
-            <div class="flex col start mb1 list-container">
+            <div class="flex col start mb1 list-container" id="to-do-items-list">
                 <% for(let i of to_do_list) 
                     {%>
                         <div class="flex row start list-item-container">
@@ -70,20 +81,24 @@
                                 <div class="description"><%= i.description %></div>
                                 <div class="date-container">
                                     <i class="fas fa-calendar-alt mr1"></i>
-                                    <span><%= i.date %></span>
+                                    <span>Due Date:</span>
+                                    <span class="date"><%= i.date %></span>
+                                </div>
+                                <div class="date-container">
+                                    <i class="fas fa-calendar-alt mr1"></i>
+                                    <span>Date Added:</span>
+                                    <span class="date"><%= i.createdAt %></span>
                                 </div>
                             </div>
 
                             <div>
                                 <% if (i.category !== "none") { %>
                                     <div id="cat" class="category category-container">
-                                        <span><%= i.category %></span>
+                                        <span class="category-text"><%= i.category %></span>
                                     </div>
                                     <% } 
                                 %>
                             </div>
-                            
-                            
                         </div>
                     <%} 
                 %>
@@ -101,6 +116,9 @@
 
     // jquery-ui for calendar imported    
     <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
+    //jquery for moment 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
     //javascript script loaded
     <script type="text/javascript" src="/js/home-script.js"></script>
