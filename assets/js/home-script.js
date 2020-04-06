@@ -8,9 +8,12 @@ $(function() {
 //using jquery now
 $('#dropdown-sort').change(function(){
     let selectedOption = $(this).children("option:selected").val();
+    console.log('selected-option ');
+    console.log(selectedOption);
     $.ajax({
         type: 'get',
-        url: `/sort-item/?sort-by=${selectedOption}`,
+        url: `/sort-item?sby=${selectedOption}`,
+        contentType: "application/json; charset=utf-8",
         success: function(data){
             console.log('Inside success function');
             console.log(data);  
@@ -36,6 +39,9 @@ let categoryColorCodeFn = function(){
         // console.log(container);
         let spanElement = $('.category-text', container);
         let categoryText = spanElement.text();
+        if(categoryText=='none'){
+            container.remove();
+        }
         if(categoryText=='Personal'){
            container.css("background-color", "#3C6CB8");
         }
@@ -95,6 +101,7 @@ let domListUpdation = function(data){
     });
 
     dateFormattingFn();
+    categoryColorCodeFn();
 }
 
 dateFormattingFn();

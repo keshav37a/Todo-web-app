@@ -57,10 +57,23 @@ module.exports.deleteItem = function (req, res) {
 }
 
 module.exports.sortItem = async function(req, res){
-    console.log(req.body);
+    console.log(req.query);
+    let sortParameter = req.query;
+    let getAndSortItems = {};
+    if(sortParameter.sby=='due-date'){
+        getAndSortItems = await ToDoItem.find({}).sort({date: -1});
+    }
+    else if(sortParameter.sby=='created-at'){
+        getAndSortItems = await ToDoItem.find({}).sort({createdAt: -1});
+    }
+    else if(sortParameter.sby=='updated-at'){
+        getAndSortItems = await ToDoItem.find({}).sort({updatedAt: -1});
+    }
+    else{
+        getAndSortItems = await ToDoItem.find({});
+    }
+    console.log(getAndSortItems);
     console.log('Home Controller called for sortItem');
-    let getAndSortItems = await ToDoItem.find({}).sort({createdAt: -1});
-
     if(req.xhr){
         console.log(`req.xhr: ${req.xhr}`);
         return res.status(200).json({
