@@ -15,6 +15,8 @@ const toDoScheme = new mongoose.Schema({
         type: Date,
         require: true
     }
+},{
+    timestamps: true
 });
 
 //Creating and exporting out schema
