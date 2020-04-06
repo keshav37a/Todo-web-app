@@ -58,15 +58,32 @@
                         Tasks</span></button>
             </div>
 
-            <div id="dropdown-sort-container" class="flex row center mb1 mt1">
-                <label for="dropdown-sort" class="mr1">Sort By</label>
-                <select name="sort-items" id="dropdown-sort">
-                    <option value="default" selected>None</option>
-                    <option value="due-date">Due Date</option>
-                    <option value="created-at">Created At</option>
-                    <option value="updated-at">Updated At</option>
-                </select>
+            <div id="dropdown-container" class="flex row center">
+                <div id="dropdown-sort-container" class="mb1 mt1 mr1">
+                    <label for="dropdown-sort" class="mr1">Sort By</label>
+                    <select name="sort-items" id="dropdown-sort">
+                        <option value="default" selected>None</option>
+                        <option value="due-date">Due Date</option>
+                        <option value="created-at">Created At</option>
+                        <option value="updated-at">Updated At</option>
+                    </select>
+                </div>
+
+                <div id="dropdown-filter-container" class="mb1 mt1 mr1">
+                    <label for="dropdown-filter" class="mr1">Filter</label>
+                    <select name="filter-items" id="dropdown-filter">
+                        <option value="">Choose</option>
+                        <option value="none">None</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Work">Work</option>
+                        <option value="School">School</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+
             </div>
+            
 
 
             <!-- List container which consists of each item in the list, getting populated by iterating over toDoList array -->

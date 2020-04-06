@@ -89,3 +89,35 @@ module.exports.sortItem = async function(req, res){
         to_do_list: getAndSortItems
     });
 }
+
+
+module.exports.filterItem = async function(req, res){
+    console.log(req.query);
+    let filterParameter = req.query;
+    let getFilteredItems = {};
+    let filter = req.query.fby;
+
+    if(filter.length>0)
+        getFilteredItems = await ToDoItem.find({'category': filter});
+
+    else
+        getFilteredItems = await ToDoItem.find({});
+
+    
+    console.log(getFilteredItems);
+    console.log('Home Controller called for sortItem');
+    if(req.xhr){
+        console.log(`req.xhr: ${req.xhr}`);
+        return res.status(200).json({
+            data: {
+                items: getFilteredItems
+            },
+            message: 'Found and Filtered Successfully'
+        });
+    }
+    console.log('after xhr check', getAndSortItems);
+    return res.render('home', {
+        title: 'ToDo App',
+        to_do_list: getFilteredItems
+    });
+}

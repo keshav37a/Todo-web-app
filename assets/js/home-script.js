@@ -23,6 +23,22 @@ $('#dropdown-sort').change(function(){
     // alert(selectedOption);
 })
 
+$('#dropdown-filter').change(function(){
+    let selectedOption = $(this).children("option:selected").val();
+    console.log('selected-option ');
+    console.log(selectedOption);
+    $.ajax({
+        type: 'get',
+        url: `/filter-item?fby=${selectedOption}`,
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+            console.log('Inside success function');
+            console.log(data);  
+            domListUpdation(data);
+        }
+    })
+});
+
 let dateFormattingFn = function(){
     $('.date').each(function(){
         let element = $(this);
