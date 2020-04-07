@@ -127,6 +127,7 @@ $('#add-note-form').submit(function(e){
     })
 })
 
+//ajax function for deleting multiple notes
 $('#delete-notes-form').submit(function(e){
     let deleteForm = $('#delete-notes-form');
     let obj = deleteForm.serialize();
@@ -208,6 +209,6 @@ let searchNotes = function(){
 }
 
 
-
+// Calling these functions to format and color code at the initial loading
 dateFormattingFn();
 categoryColorCodeFn();
