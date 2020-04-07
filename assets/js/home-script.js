@@ -5,70 +5,6 @@ $(function() {
     $("#calendar").datepicker();
 }); 
 
-//ajax for add new note
-$('#add-note-form').submit(function(e){
-    console.log('On Submission');
-    let addNoteForm = $('#add-note-form');
-    e.preventDefault();
-    $.ajax({
-        type: 'post',
-        url: '/create-item',
-        data: addNoteForm.serialize(),
-        success: function(data){
-            console.log(data);
-            let str = addOneItemToList(data.data.items);
-            console.log(str);
-            let toDoItemList = $('#to-do-items-list');
-            toDoItemList.append($(str));
-            categoryColorCodeFn();
-            dateFormattingFn();
-            // addOneItemToColorCode($(str));
-            $('#add-note-form')[0].reset();
-            console.log(toDoItemList);
-        },
-        error: function(err){
-            console.log(err.responseText);
-        }
-    })
-})
-
-
-//using jquery now
-//A change function for an ajax call to get the elements from the db in a sorted order
-$('#dropdown-sort').change(function(){
-    let selectedOption = $(this).children("option:selected").val();
-    console.log('selected-option ');
-    console.log(selectedOption);
-    $.ajax({
-        type: 'get',
-        url: `/sort-item?sby=${selectedOption}`,
-        contentType: "application/json; charset=utf-8",
-        success: function(data){
-            console.log('Inside success function');
-            console.log(data);  
-            domListUpdation(data);
-        }
-    })
-    // alert(selectedOption);
-})
-
-//A change function for an ajax call to get the elements from the db of a particular filter
-$('#dropdown-filter').change(function(){
-    let selectedOption = $(this).children("option:selected").val();
-    console.log('selected-option ');
-    console.log(selectedOption);
-    $.ajax({
-        type: 'get',
-        url: `/filter-item?fby=${selectedOption}`,
-        contentType: "application/json; charset=utf-8",
-        success: function(data){
-            console.log('Inside success function');
-            console.log(data);  
-            domListUpdation(data);
-        }
-    })
-});
-
 //Format the date from the db in other format
 let dateFormattingFn = function(){
     $('.date').each(function(){
@@ -159,6 +95,96 @@ let domListUpdation = function(data){
     dateFormattingFn();
     categoryColorCodeFn();
 }
+
+let deleteOneItem = function(element){
+    $(element).remove();
+}
+
+//ajax for add new note
+$('#add-note-form').submit(function(e){
+    console.log('On Submission');
+    let addNoteForm = $('#add-note-form');
+    e.preventDefault();
+    $.ajax({
+        type: 'post',
+        url: '/create-item',
+        data: addNoteForm.serialize(),
+        success: function(data){
+            console.log(data);
+            let str = addOneItemToList(data.data.items);
+            console.log(str);
+            let toDoItemList = $('#to-do-items-list');
+            toDoItemList.append($(str));
+            categoryColorCodeFn();
+            dateFormattingFn();
+            // addOneItemToColorCode($(str));
+            $('#add-note-form')[0].reset();
+            console.log(toDoItemList);
+        },
+        error: function(err){
+            console.log(err.responseText);
+        }
+    })
+})
+
+$('#delete-notes-form').submit(function(e){
+    let deleteForm = $('#delete-notes-form');
+    let obj = deleteForm.serialize();
+    console.log('after serialize');
+    console.log(obj);
+    console.log(deleteForm);
+    e.preventDefault();
+    $.ajax({
+        type: "get",
+        data: deleteForm.serialize(),
+        url: '/delete-item',
+        success: function(data){
+            console.log(data);
+            data.data.deletedItems.forEach(function(i){
+                let element = $(`#container-${i._id}`);
+                deleteOneItem(element);
+            })
+        }
+    })
+})
+
+
+//using jquery now
+//A change function for an ajax call to get the elements from the db in a sorted order
+$('#dropdown-sort').change(function(){
+    let selectedOption = $(this).children("option:selected").val();
+    console.log('selected-option ');
+    console.log(selectedOption);
+    $.ajax({
+        type: 'get',
+        url: `/sort-item?sby=${selectedOption}`,
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+            console.log('Inside success function');
+            console.log(data);  
+            domListUpdation(data);
+        }
+    })
+    // alert(selectedOption);
+})
+
+//A change function for an ajax call to get the elements from the db of a particular filter
+$('#dropdown-filter').change(function(){
+    let selectedOption = $(this).children("option:selected").val();
+    console.log('selected-option ');
+    console.log(selectedOption);
+    $.ajax({
+        type: 'get',
+        url: `/filter-item?fby=${selectedOption}`,
+        contentType: "application/json; charset=utf-8",
+        success: function(data){
+            console.log('Inside success function');
+            console.log(data);  
+            domListUpdation(data);
+        }
+    })
+});
+
 
 dateFormattingFn();
 categoryColorCodeFn();

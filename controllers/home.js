@@ -49,22 +49,39 @@ module.exports.createItem = async function (req, res) {
 }
 
 //Delete item from database
-module.exports.deleteItem = function (req, res) {
+module.exports.deleteItem = async function (req, res) {
     console.log('req.body for deletion', req.body);
-
+    console.log(req.query);
     //getting the ids(_id from database) of all the checkboxes selected, locating them in the database and removing them
-    let deleteData = req.body;
-    for (let key of Object.keys(deleteData)) {
-        console.log('key for deletion', key);
-        ToDoItem.findByIdAndDelete(key, function (err) { 
-            if(err){
-                console.log('Error in Deleting from db');
-                return;
-            }
-            console.log("Item Deleted");
-         })
+
+    try{
+        let deleteData = req.query;
+        delete deleteData['sort-items'];
+        delete deleteData['filter-items'];
+        let delItems = [];
+        for (let key of Object.keys(deleteData)) {
+            console.log('key for deletion', key);
+            let deletedItem = await ToDoItem.findByIdAndDelete(key);
+            delItems.push(deletedItem);
+        }
+
+        if(req.xhr){
+            console.log(`deleteData: ${req.xhr}`);
+            return res.status(200).json({
+                data: {
+                    deletedItems: delItems
+                },
+                message: 'Items Deleted Successfully'
+            });
+        }
+
+        return res.redirect('back');
     }
-    return res.redirect('back');
+    catch(err){
+        console.log(err);
+    }
+
+    
 }
 
 module.exports.sortItem = async function(req, res){
@@ -105,8 +122,6 @@ module.exports.sortItem = async function(req, res){
     catch(err){
         console.log(`error: ${err}`);
     }
-
-    
 }
 
 
@@ -116,27 +131,30 @@ module.exports.filterItem = async function(req, res){
     let getFilteredItems = {};
     let filter = req.query.fby;
 
-    if(filter.length>0)
-        getFilteredItems = await ToDoItem.find({'category': filter});
+    try{
+        if(filter.length>0)
+            getFilteredItems = await ToDoItem.find({'category': filter});
+        else
+            getFilteredItems = await ToDoItem.find({});
 
-    else
-        getFilteredItems = await ToDoItem.find({});
-
-    
-    console.log(getFilteredItems);
-    console.log('Home Controller called for sortItem');
-    if(req.xhr){
-        console.log(`req.xhr: ${req.xhr}`);
-        return res.status(200).json({
-            data: {
-                items: getFilteredItems
-            },
-            message: 'Found and Filtered Successfully'
+        console.log(getFilteredItems);
+        console.log('Home Controller called for sortItem');
+        if(req.xhr){
+            console.log(`req.xhr: ${req.xhr}`);
+            return res.status(200).json({
+                data: {
+                    items: getFilteredItems
+                },
+                message: 'Found and Filtered Successfully'
+            });
+        }
+        console.log('after xhr check', getAndSortItems);
+        return res.render('home', {
+            title: 'ToDo App',
+            to_do_list: getFilteredItems
         });
     }
-    console.log('after xhr check', getAndSortItems);
-    return res.render('home', {
-        title: 'ToDo App',
-        to_do_list: getFilteredItems
-    });
+    catch(err){
+        console.log(`${err}`);
+    }
 }
