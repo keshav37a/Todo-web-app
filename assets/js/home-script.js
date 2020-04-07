@@ -185,6 +185,29 @@ $('#dropdown-filter').change(function(){
     })
 });
 
+//Search function for searching notes
+let searchNotes = function(){
+    let text = $('#search-field').val();
+    console.log(`searchnotes called: ${text}`);
+    $.ajax({
+        type: 'get',
+        url: `/search?query=${text}`,
+        success: function(data){
+            console.log(data);
+            let listContainer = $('#to-do-items-list');
+            listContainer.empty();
+            data.data.itemsFound.forEach(element => {
+                let str = addOneItemToList(element);
+                console.log(str);
+                listContainer.append(str);
+            })
+            dateFormattingFn();
+            categoryColorCodeFn();
+        }
+    })
+}
+
+
 
 dateFormattingFn();
 categoryColorCodeFn();

@@ -58,7 +58,14 @@
                         Tasks</span></button>
             </div>
 
-            <div id="dropdown-container" class="flex row center">
+            <div id="dropdown-container" class="flex row spc-evn">
+
+                <!-- Input field for search -->
+
+                <div id="search-container">
+                    <input type="text" placeholder="Search..." id="search-field" oninput="searchNotes()">
+                </div>
+
                 <!-- Dropdown for sort  -->
                 <div id="dropdown-sort-container" class="mb1 mt1 mr1">
                     <label for="dropdown-sort" class="mr1">Sort By</label>

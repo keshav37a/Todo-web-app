@@ -158,3 +158,27 @@ module.exports.filterItem = async function(req, res){
         console.log(`${err}`);
     }
 }
+
+module.exports.searchItem = async function(req, res){
+    console.log('search item called in home controller');
+    console.log(req.query);
+    let queryParam = req.query.query;
+    regexParam = new RegExp(queryParam, 'i');
+    try{
+        if(req.xhr){
+            console.log(`req.xhr in search: ${req.xhr}`);
+            let itemsFound = await ToDoItem.find({'description': regexParam});
+    
+            return res.status(200).json({
+                data:{
+                    itemsFound: itemsFound
+                },
+                message: 'Successful! Items found'
+            })
+        }
+        return res.redirect('back');
+    }
+    catch(err){
+        console.log(`Error: ${err}`);
+    }
+}

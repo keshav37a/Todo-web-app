@@ -39,6 +39,19 @@ main{
     border: none;
 }
 
+#dropdown-container{
+    margin-bottom: 1rem;
+}
+
+#search-container{
+    padding-top: 0.9rem;
+}
+
+#search-field{
+    font-size: 0.8rem;
+    width: 8rem;
+}
+
 /* Made this relative to set percentage widths to its child elements (checkbox, description-date, category) */
 .list-item-container{
     position: relative;
